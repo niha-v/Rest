@@ -1,19 +1,26 @@
+# Lets Use the Dataset and find Key Insights 
+```sql
 use restaurant_db;
 
 -- View Menu_items table.
 select * from menu_items;
-
--- Find number of items on the menu
+```
+- Find number of items on the menu
+  ```sql
 select count(*) from menu_items;
+```
 
--- Least and expensive item 
+- Least and expensive item in Restaurant
+```sql
 select * from menu_items
 order by price;
 
 select * from menu_items
 order by price desc;
+```
 
--- Italain dishes
+- Italain dishes
+``` sql
 select count(*) from menu_items
 where category = 'Italian';
 
@@ -21,8 +28,9 @@ where category = 'Italian';
 select * from menu_items
 where category = 'Italian'
 order by price;
+```
 
--- dishes in each category
+- Different Dishes in each category
 select category, count(menu_item_id) as num_dishes
 from menu_items
 group by category;
@@ -31,6 +39,7 @@ group by category;
 select category, avg(price) as avg_price
 from menu_items
 group by category;
+```
 
 -- View order details table 
 select * from order_details;
