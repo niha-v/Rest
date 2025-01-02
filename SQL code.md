@@ -1,4 +1,6 @@
 # Lets Use the Dataset and find Key Insights 
+
+
 ```sql
 use restaurant_db;
 
@@ -6,7 +8,7 @@ use restaurant_db;
 select * from menu_items;
 ```
 - Find number of items on the menu
-  ```sql
+```sql
 select count(*) from menu_items;
 ```
 
@@ -31,6 +33,7 @@ order by price;
 ```
 
 - Different Dishes in each category
+```sql
 select category, count(menu_item_id) as num_dishes
 from menu_items
 group by category;
@@ -41,9 +44,8 @@ from menu_items
 group by category;
 ```
 
--- View order details table 
-select * from order_details;
-
+- Date Range
+```sql
 -- Orders made within a date range 
 select min(order_date), max(order_date) from order_details;
 
@@ -52,24 +54,26 @@ select count(distinct(order_id)) from order_details;
 
 -- Items ordered within a date range
 select count(*) from order_details;
+```
 
--- Which order has more number if items
+- Which Order has More Number if items
+```sql
 select order_id, count(item_id) as num_items 
 from order_details
 group by order_id
 order by num_items DESC;
 
--- how may items had more than 12 items
+-- How may items had more than 12 items
 select count(*) from
 
 (select order_id, count(item_id) as num_items 
 from order_details
 group by order_id
 having num_items > '12') as num_orders;
+```
 
-
--- Analyze Customer Behavior
-
+- Analyze Customer Behavior
+```sql
 -- Combine the menu_items and order_details table 
 select *
 from order_details od Left join menu_items mi
@@ -81,48 +85,52 @@ from order_details od Left join menu_items mi
      on od.item_id = mi.menu_item_id
 group by item_name 
 order by num_purchases desc ;
-
--- Category
+```
+- Category
+```sql
 select item_name, category, count(order_details_id) as num_purchases
 from order_details od Left join menu_items mi
      on od.item_id = mi.menu_item_id
 group by item_name, category 
 order by num_purchases ;
+```
 
--- Top 5 orders that spent most money?
-
+- Top 5 orders that spent most money?
+```sql
 select order_id, sum(price) as total_spent
 from order_details od Left join menu_items mi
      on od.item_id = mi.menu_item_id
 group by order_id
 order by total_spent desc
 limit 5;   
+```
 
--- Highest spent order details
-
+- Highest spent order details
+```sql
 select category, count(item_id) as num_items 
 from order_details od Left join menu_items mi
      on od.item_id = mi.menu_item_id
 where order_id = 440
 group by category ;  
-     
---  Top 5 highest spent orders
-    
+```
+   
+- Top 5 highest spent orders
+```sql
 select category, count(item_id) as num_items 
 from order_details od Left join menu_items mi
      on od.item_id = mi.menu_item_id
 where order_id in (440, 2075, 1957, 330, 2675)
 group by category; 
+```
 
- -- using order_id to identify each customer detalils 
+- Using order_id to identify each Customer Detalils 
+```sql
 select order_id, category, count(item_id) as num_items 
 from order_details od Left join menu_items mi
      on od.item_id = mi.menu_item_id
 where order_id in (440, 2075, 1957, 330, 2675)
 group by order_id, category;
-     
--- insights gathered in this - most of the customers like Italian food even though the price is high
--- Most purchased food is hamburger and least is Chicken Tacos(mexican food)
+```   
 
      
      
